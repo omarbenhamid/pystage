@@ -1,9 +1,12 @@
 import pygame
 import pkg_resources
+import arabic_reshaper
+from bidi.algorithm import get_display
 
-
+def _fix_bidi(str):
+    return get_display(arabic_reshaper.reshape(str))
+    
 class Text(pygame.sprite.Sprite):
-
 
     def __init__(self, sprite_or_stage, text, x=0, y=0, color=(255,255,255), fontsize=20):
         super().__init__()
@@ -11,7 +14,7 @@ class Text(pygame.sprite.Sprite):
         self.sprite_or_stage = sprite_or_stage
         # Visible sprites go into this group
         self.sprite_or_stage.stage.text_group.add(self)
-        self._text = text
+        self._text = _fix_bidi(text)
         self._color = color
         self._fontsize=fontsize
         self._font=pygame.font.Font(pkg_resources.resource_filename("pystage", "fonts/roboto-bold.ttf"), fontsize)
@@ -43,7 +46,7 @@ class Text(pygame.sprite.Sprite):
 
     def set_text(self, text):
         if text != self._text:
-            self._text=text
+            self._text=_fix_bidi(text)
             self.update_image()
 
     def set_size(self, fontsize):

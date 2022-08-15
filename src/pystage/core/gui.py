@@ -1,5 +1,10 @@
 import pygame
 import pkg_resources
+import arabic_reshaper
+from bidi.algorithm import get_display
+
+def _fix_bidi(str):
+    return get_display(arabic_reshaper.reshape(str))
 
 pygame.init()
 
@@ -117,7 +122,7 @@ def render_lines(lines, font, color, lw, lh, lh_offset):
     surface = pygame.Surface((lw, (lh + lh_offset) * len(lines)), flags=pygame.SRCALPHA)
     y_offset = 0
     for line in lines:
-        font_surface = font.render(line, True, color)
+        font_surface = font.render(_fix_bidi(line), True, color)
         surface.blit(font_surface, (0, y_offset))
         y_offset += lh + lh_offset
     return surface
