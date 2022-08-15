@@ -1,11 +1,12 @@
+from tkinter import font
 from pystage.core import CoreStage
 from pystage.en import Sprite
 
 
 class Stage():
 
-    def __init__(self):
-        self._core = CoreStage()
+    def __init__(self, name="Welcome to pyStage!", width=480, height=360):
+        self._core = CoreStage(name, width, height)
         self._core.facade = self
         self._core.sprite_facade_class = Sprite
 
@@ -1701,3 +1702,6 @@ class Stage():
 
         """
         return self._core.sound_volume()
+
+    def write_text(self, text, x=0, y=0, color=(255,255,255), fontsize=20):
+        return self._core.pystage_writetext(text,x,y,color,fontsize)

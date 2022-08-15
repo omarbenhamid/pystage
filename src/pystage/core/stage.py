@@ -14,7 +14,7 @@ from pystage.core._variables import _Variables
 from pystage.core.messages import MessageBroker
 from pystage.core.sprite import CoreSprite
 from pystage.core.asking import InputManager
-
+from pystage.core.texts import Text
 
 class SpriteGroup(pygame.sprite.OrderedUpdates):
     def __init__(self):
@@ -96,6 +96,7 @@ class CoreStage(
         self.bubbles = pygame.sprite.Group()
         self.visible_bubbles = pygame.sprite.Group()
         self.monitor_group = pygame.sprite.Group()
+        self.text_group = pygame.sprite.Group()
         self.pen_images = {}
         self.background_color = (255, 255, 255)
         # surface is where the whole stage is rendered to
@@ -149,6 +150,9 @@ class CoreStage(
             return
         surface.blit(image, (0, 0))
 
+    def pystage_writetext(self, text, x=0, y=0, color=(255,255,255), fontsize=20):
+        return Text(self, text, x, y, color, fontsize)
+
     def pystage_play(self):
         self.running = True
         """
@@ -192,6 +196,7 @@ class CoreStage(
             self.bubbles.update()
             self.input_manager.update(dt)
             self.monitor_group.update()
+            self.text_group.update()
 
             self._draw(self.surface)
             for sprite in self.pen_images:
@@ -202,7 +207,9 @@ class CoreStage(
             self.bubbles.draw(self.surface)
             self.input_manager.draw(self.surface)
 
+            self.text_group.draw(self.surface)
             self.monitor_group.draw(self.surface)
+            
 
             factor_x = self.screen.get_width() / self.surface.get_width()
             factor_y = self.screen.get_height() / self.surface.get_height()
