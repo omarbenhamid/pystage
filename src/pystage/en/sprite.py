@@ -2560,7 +2560,7 @@ class Sprite:
         -------
 
         """
-        return self._core.sound_play(name, loop=0)
+        return self._core.sound_play(name, loop)
 
     def play_sound_until_done(self, name):
         """play sound %1 until done
